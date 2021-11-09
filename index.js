@@ -26,7 +26,12 @@ start();
 
 async function start() {
   console.log(
-    "Let's play a game where you (human) make up a number between " + min + " " + "and " + max + " , and I (computer) try to guess it."
+    "Let's play a game where you (human) make up a number between " +
+      min +
+      " " +
+      "and " +
+      max +
+      " , and I (computer) try to guess it."
   );
   let secretNumber = await ask(
     "What is your secret number?\nI won't peek, I promise...\n"
@@ -35,16 +40,22 @@ async function start() {
   let compGuess = randomNum(min, max);
   let answer = await ask("Is your number " + compGuess + "? ");
 
-  // Now try and complete the program.
   if (answer === "y") {
     console.log("Woohoo!! ");
     process.exit();
   } else {
     while (answer !== "y") {
-      let highLow = await ask("Is it higher or lower? ");
-      console.log(highLow);
-      compGuess = randomNum(min, max);
-      let answer = await ask("Is your number " + compGuess + "? ");
+      let highLow = await ask("Is it higher or lower? (h/l) ");
+      if (highLow === "h") {
+        min = compGuess + 1
+        compGuess = randomNum(min, max)
+      }
+      else if (highLow === "l") {
+        max = compGuess - 1
+        compGuess = randomNum(min, max)
+      }
+      answer = await ask("Is your number " + compGuess + "? ");
     }
   }
+process.exit();
 }
