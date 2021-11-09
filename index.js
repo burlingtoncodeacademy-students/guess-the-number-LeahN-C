@@ -22,6 +22,11 @@ function randomNum(min, max) {
 }
 randomNum(1, 100);
 
+function smartGuess(min, max) {
+  return Math.floor((min + max) / 2)
+}
+
+
 start();
 
 async function start() {
@@ -37,7 +42,7 @@ async function start() {
     "What is your secret number?\nI won't peek, I promise...\n"
   );
   console.log("You entered: " + secretNumber);
-  let compGuess = randomNum(min, max);
+  let compGuess = smartGuess(min, max);
   let answer = await ask("Is your number " + compGuess + "? ");
 
   if (answer === "y") {
@@ -48,11 +53,11 @@ async function start() {
       let highLow = await ask("Is it higher or lower? (h/l) ");
       if (highLow === "h") {
         min = compGuess + 1
-        compGuess = randomNum(min, max)
+        compGuess = smartGuess(min, max)
       }
       else if (highLow === "l") {
         max = compGuess - 1
-        compGuess = randomNum(min, max)
+        compGuess = smartGuess(min, max)
       }
       answer = await ask("Is your number " + compGuess + "? ");
     }
