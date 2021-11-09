@@ -45,17 +45,17 @@ async function start() {
   let compGuess = smartGuess(min, max);
   let answer = await ask("Is your number " + compGuess + "? ");
 
-  if (answer === "y") {
+  if (answer === "y" || answer === "yes") {
     console.log("Woohoo!! ");
     process.exit();
   } else {
     while (answer !== "y") {
       let highLow = await ask("Is it higher or lower? (h/l) ");
-      if (highLow === "h") {
+      if (highLow === "h" || highLow === "higher") {
         min = compGuess + 1
         compGuess = smartGuess(min, max)
       }
-      else if (highLow === "l") {
+      else if (highLow === "l" || highLow === "lower") {
         max = compGuess - 1
         compGuess = smartGuess(min, max)
       }
