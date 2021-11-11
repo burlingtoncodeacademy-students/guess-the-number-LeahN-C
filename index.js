@@ -35,7 +35,7 @@ async function start() {
     "First, pick a number greater than 1 to be your maximum range. "
   );
   max = parseInt(max);
-  console.log(typeof max);
+  //console.log(typeof max);
   let secretNumber = await ask(
     "Now, choose a number between " +
       min +
@@ -44,6 +44,9 @@ async function start() {
       "." +
       " \nWhat is your secret number? \nI won't peek, I promise...\n"
   );
+    while (secretNumber > max) {
+      secretNumber = await ask("Please choose a number within the range. ")
+    }
   console.log("You entered: " + secretNumber);
   let compGuess = smartGuess(min, max);
   let answer = await ask("Is your number " + compGuess + "? ");
@@ -76,6 +79,7 @@ async function start() {
             "! "
         );
       } else if (answer === "y" || answer === "yes") {
+        console.log("Yay! I finally got it! ")
       }
       answer = await ask("Is your number " + compGuess + "? ");
     } console.log(
