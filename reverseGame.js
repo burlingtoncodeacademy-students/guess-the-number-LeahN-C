@@ -13,14 +13,6 @@ let min = 1;
 let max;
 let range = max - min + 1;
 
-//Function for computer coming up with a number.
-
-/*
-function secretNum(min, max) {
-  let range = max - min + 1;
-  return min + Math.floor(Math.random() * range);
-}
-*/
 
 start();
 
@@ -46,17 +38,28 @@ async function start() {
       "\nWhat is your guess? "
   );
   humanGuess = parseInt(humanGuess);
-  while (humanGuess === compNumber) {
-    console.log("Congratulations! You guessed it correctly!");
-  }
-  while (humanGuess !== compNumber) {
-    console.log("You guessed " + humanGuess + ". ");
-    if (humanGuess < compNumber) {
-      console.log("Noooo, your guess is too low. ");
-    } else if (humanGuess > compNumber) {
-      console.log("Nope! Your number is too high. ");
+  console.log("You guessed " + humanGuess + ". ");
+  if (humanGuess === compNumber) {
+    console.log("Wow, you guessed it on the FIRST TRY! You're amazing. ");
+  } else {
+    while (humanGuess !== compNumber) {
+      if (humanGuess > max || humanGuess < min) {
+        humanGuess = await ask(
+          "Your guess is outside of the range, please pick a guess between " +
+            min +
+            " and " +
+            max +
+            ". "
+        );
+      } else if (humanGuess < compNumber) {
+        humanGuess = await ask("Noooo, your guess is too low. Guess again! ");
+      } else if (humanGuess > compNumber) {
+        humanGuess = await ask("Nope! Your number is too high. Guess again! ");
+      } else {
+        console.log("Congratulations! You guessed it correctly! ");
+        process.exit();
+      }
     }
-    humanGuess = await ask("Guess again! ");
   }
 
   process.exit();
