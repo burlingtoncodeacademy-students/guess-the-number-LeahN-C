@@ -56,13 +56,7 @@ async function start() {
   } else {
     while (answer === "n" || answer === "no") {
       let highLow = await ask("Is it higher or lower? (h/l) ");
-      if (answer === "y" || answer === "yes") {
-        console.log(
-          "Yay! I finally guessed it! \nIt took me " +
-             +
-            " tries to guess your number. "
-        );
-      } else if (compGuess - 1 < min && highLow === "l") {
+      if (compGuess - 1 < min && highLow === "l") {
         console.log(
           "Your number is higher than " +
             (compGuess - 1) +
@@ -84,8 +78,16 @@ async function start() {
       } else if (highLow === "l") {
         max = compGuess - 1;
         compGuess = smartGuess(min, max);
+      } else {
+        while (answer === "y" || answer === "yes") {
+          console.log(
+            "Yay! I finally guessed it! \nIt took me " +
+              +" tries to guess your number. "
+          );
+          await ask("Do you want to play again? ");
+        }
+        answer = await ask("Is your number " + compGuess + "? ");
       }
-      answer = await ask("Is your number " + compGuess + "? ");
     }
   }
 
