@@ -26,7 +26,7 @@ async function start() {
     "First, pick a number greater than 1 to be my maximum range. "
   );
   max = parseInt(max);
-  let compNumber = Math.floor((min + max) / 2);
+  let compNumber = Math.floor((min + max));
   let humanGuess = await ask(
     "Okay, hmmm, let me think of a number between " +
       min +

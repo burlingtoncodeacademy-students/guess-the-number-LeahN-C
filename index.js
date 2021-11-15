@@ -78,18 +78,18 @@ async function start() {
       } else if (highLow === "l") {
         max = compGuess - 1;
         compGuess = smartGuess(min, max);
-      } else {
-        while (answer === "y" || answer === "yes") {
-          console.log(
-            "Yay! I finally guessed it! \nIt took me " +
-              +" tries to guess your number. "
+      } else if (answer === "y" || answer === "yes") {
+        console.log("Yay! I finally guessed it! ");
+          /*console.log(
+            "Yay! I finally guessed it! \nIt took me " + " " + " tries to guess your number. "
           );
           await ask("Do you want to play again? ");
+          */
+         process.exit();
         }
         answer = await ask("Is your number " + compGuess + "? ");
       }
     }
-  }
 
   /* Play again */
   /*
