@@ -17,10 +17,12 @@ let max;
 /* ---------------Function Block------------*/
 
 //Funtion for comp to guess a random number.
+/*
 function randomNum(min, max) {
   let range = max - min + 1;
   return min + Math.floor(Math.random() * range);
 }
+*/
 
 //Function for computer to make a smarter guess.
 function smartGuess(min, max) {
@@ -31,6 +33,7 @@ function smartGuess(min, max) {
 start();
 
 async function start() {
+  min = 1;
   console.log(
     "Let's play a game where you (human) think of a number, and I (computer) try to guess it."
   );
@@ -59,6 +62,7 @@ async function start() {
   let compGuess = smartGuess(min, max);
   //Computer makes a smart guess.
   let answer = await ask("Is your number " + compGuess + "? ");
+  //let guessCount = ;
 
   //If computer guesses correctly on the first try, it rejoices!
   //Otherwise, it enters 'while' loop below.
@@ -66,8 +70,18 @@ async function start() {
     console.log("Woohoo! I guessed it on the first try!! ");
     startAgain();
   } else {
-    while (answer === "n" || answer === "no") {
+    while (answer !== "y" || answer !== "yes") {
       //If computer guesses incorrectly, it asks if the number is higher or lower.
+      if (answer === "y" || answer === "yes") {
+        //If computer finally guesses correctly, it celbrates!
+        //console.log("Yay! I finally guessed it! ");
+        console.log(
+          "Yay! I finally guessed it! \nIt took me " +
+             +
+            " tries to guess your number. "
+        );
+        startAgain();
+      }
       let highLow = await ask("Is it higher or lower? (h/l) ");
       //If human lies, computer catches human.
       if (compGuess - 1 < min && highLow === "l") {
@@ -94,16 +108,7 @@ async function start() {
         max = compGuess - 1;
         //If guess is too low, computer guesses higher.
         compGuess = smartGuess(min, max);
-      } else if (answer === "y" || answer === "yes") {
-        //If computer finally guesses correctly, it celbrates!
-        //console.log("Yay! I finally guessed it! ");
-        console.log(
-          "Yay! I finally guessed it! \nIt took me " +
-            " " +
-            " tries to guess your number. "
-        );
-        startAgain();
-      }
+      } 
 
       //process.exit();
       answer = await ask("Is your number " + compGuess + "? ");
@@ -111,6 +116,7 @@ async function start() {
   }
 }
 
+//Callback function to start game over if human says yes.
 async function startAgain() {
   let playAgain = await ask("Do you want to play again? ");
   if (playAgain === "y" || playAgain === "yes") {
