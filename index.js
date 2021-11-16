@@ -1,4 +1,4 @@
-/* ---------------Boiler Plate--------------- */
+/* --------------- Boiler Plate --------------- */
 
 const readline = require("readline");
 const rl = readline.createInterface(process.stdin, process.stdout);
@@ -9,14 +9,52 @@ function ask(questionText) {
   });
 }
 
-/* ----------------Globals--------------- */
+/* --------------------- Game choice function ------------------ */
+
+//Call the game choice function.
+whichGame();
+
+async function whichGame() {
+  console.log("Let's play a number guessing game!");
+  //Computer asks which game human would like to play.
+  let gameChoice = await ask(
+    "Type 'h' if you (human) want to choose a number, \nor 'c' if you want me (computer) to choose a number. "
+  );
+  //If human chooses "h", go to humanChooses function.
+  //If humam chooses "c", go to compChooses function.
+  if (gameChoice === "h") {
+    //Computer repeats human's response.
+    console.log("You chose human! ");
+    humanChooses();
+  } else if (gameChoice === "c") {
+    //Computer repeats human's response.
+    console.log("You chose computer! ");
+    compChooses();
+  }
+
+  //If human chooses an invalid selection, computer redirects. --Not working properly
+  /*
+  else if (gameChoice !== "h" || gameChoice !== "c") {
+    gameChoice = await ask(
+      "Please choose either 'h' for human or 'c' for computer. "
+    );
+  }
+  */
+
+}
+
+/* ------------------ THE HUMAN CHOOSES NUMBER GAME --------------- */
+
+/* ---------------- Globals --------------- */
 
 let min = 1;
 let max;
 
 /* ---------------Function Block------------*/
 
-//Funtion for comp to guess a random number.
+//Function for comp to guess a random number.
+//Not needed but keeping for records.
+
 /*
 function randomNum(min, max) {
   let range = max - min + 1;
@@ -29,10 +67,10 @@ function smartGuess(min, max) {
   return Math.floor((min + max) / 2);
 }
 
-//Call the async function.
-start();
+//Call the humanChooses function.
+humanChooses();
 
-async function start() {
+async function humanChooses() {
   min = 1;
   console.log(
     "Let's play a game where you (human) think of a number, and I (computer) try to guess it."
@@ -62,26 +100,28 @@ async function start() {
   let compGuess = smartGuess(min, max);
   //Computer makes a smart guess.
   let answer = await ask("Is your number " + compGuess + "? ");
+  //Setting the amount of times computer has guessed so far to 0.
   let guessCount = 0;
-
-  //If computer guesses correctly on the first try, it rejoices!
+  //If computer guesses correctly on the first try, it rejoices and starts program over.
   //Otherwise, it enters 'while' loop below.
   if (answer === "y" || answer === "yes") {
     console.log("Woohoo! I guessed it on the first try!! ");
     startAgain();
   } else {
     while (answer !== "y" || answer !== "yes") {
+      //Counting how many times it takes computer to guess.
       guessCount = guessCount + 1;
       //If computer guesses incorrectly, it asks if the number is higher or lower.
       if (answer === "y" || answer === "yes") {
-        //If computer finally guesses correctly, it celbrates!
-        //console.log("Yay! I finally guessed it! ");
+        //If computer finally guesses correctly, it celbrates and starts program over.
         console.log(
-          "Yay! I finally guessed it! \nIt took me " + guessCount +
+          "Yay! I finally guessed it! \nIt took me " +
+            guessCount +
             " tries to guess your number. "
         );
         startAgain();
       }
+      //Defining highLow as this question.
       let highLow = await ask("Is it higher or lower? (h/l) ");
       //If human lies, computer catches human.
       if (compGuess - 1 < min && highLow === "l") {
@@ -108,9 +148,8 @@ async function start() {
         max = compGuess - 1;
         //If guess is too low, computer guesses higher.
         compGuess = smartGuess(min, max);
-      } 
-
-      //process.exit();
+      }
+      //Question always asked based on "higher" or "lower" response.
       answer = await ask("Is your number " + compGuess + "? ");
     }
   }
@@ -119,9 +158,84 @@ async function start() {
 async function startAgain() {
   let playAgain = await ask("Do you want to play again? ");
   if (playAgain === "y" || playAgain === "yes") {
-    start();
+    humanChooses();
   } else {
     process.exit();
   }
 }
-startAgain(start());
+//Call the startAgain function.
+startAgain(humanChooses());
+
+/* ------------------- THE COMPUTER CHOOSES NUMBER GAME ---------------- */
+
+/* ---------------- Global Variables ---------------- */
+
+let minimum = 1;
+let maximum;
+let range = maximum - minimum + 1;
+
+/* ------------------ Function block ---------------- */
+
+//Call the async function.
+compChooses();
+
+//Function to start the game
+async function compChooses() {
+  console.log(
+    "Let's play a game where I (computer) think of a number and you (human) guess it."
+  );
+  //Computer asks human to choose a maximum.
+  maximum = await ask(
+    "First, pick a number greater than 1 to be my maximum range. "
+  );
+  //Turns max into integer.
+  maximum = parseInt(maximum);
+  //Computer chooses a number between the minimum and maximum.
+  let compNumber = Math.floor(Math.random() * maximum);
+  //Computer asks human to guess a number.
+  let humanGuess = await ask(
+    "Okay, hmmm, let me think of a number between " +
+      minimum +
+      " and " +
+      maximum +
+      "... " +
+      "\n... " +
+      "\n\nOkay, I picked one... " +
+      "\nWhat is your guess? "
+  );
+  //Name the human guess.
+  humanGuess = parseInt(humanGuess);
+  //Computer repeats user's guess.
+  console.log("You guessed " + humanGuess + ". ");
+  //If human guesses correctly on first try, computer returns this message.
+  //Otherwise, computer goes into the 'while' loop below.
+  if (humanGuess === compNumber) {
+    console.log("Wow, you guessed it on the FIRST TRY! You're amazing. ");
+  } else {
+    while (humanGuess !== compNumber) {
+      //If the guess is outside of the range, computer returns this message.
+      if (humanGuess > maximum || humanGuess < minimum) {
+        humanGuess = await ask(
+          "Your guess is outside of the range, please pick a guess between " +
+            minimum +
+            " and " +
+            maximum +
+            ". "
+        );
+      } else if (humanGuess < compNumber) {
+        //If human guess is too low.
+        humanGuess = await ask("Noooo, your guess is too low. Guess again! ");
+      } else if (humanGuess > compNumber) {
+        //If human guess is too high.
+        humanGuess = await ask("Nope! Your number is too high. Guess again! ");
+      } else {
+        //When human finally guesses correctly...
+        console.log("Congratulations! You guessed it correctly! ");
+        //Exit the program.
+        process.exit();
+      }
+    }
+  }
+  //Exit the program.
+  process.exit();
+}

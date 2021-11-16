@@ -9,34 +9,34 @@ function ask(questionText) {
 }
 /* ---------------- Global Variables ---------------- */
 
-let min = 1;
-let max;
-let range = max - min + 1;
+let minimum = 1;
+let maximum;
+let range = maximum - minimum + 1;
 
 /* ------------------ Function block ---------------- */
 
 //Call the async function.
-start();
+compChooses();
 
 //Function to start the game
-async function start() {
+async function compChooses() {
   console.log(
     "Let's play a game where I (computer) think of a number and you (human) guess it."
   );
   //Computer asks human to choose a maximum.
-  max = await ask(
+  maximum = await ask(
     "First, pick a number greater than 1 to be my maximum range. "
   );
   //Turns max into integer.
-  max = parseInt(max);
+  maximum = parseInt(maximum);
   //Computer chooses a number between the minimum and maximum.
-  let compNumber = Math.floor(min + max);
+  let compNumber = Math.floor(Math.random() * maximum);
   //Computer asks human to guess a number.
   let humanGuess = await ask(
     "Okay, hmmm, let me think of a number between " +
-      min +
+      minimum +
       " and " +
-      max +
+      maximum +
       "... " +
       "\n... " +
       "\n\nOkay, I picked one... " +
@@ -53,12 +53,12 @@ async function start() {
   } else {
     while (humanGuess !== compNumber) {
       //If the guess is outside of the range, computer returns this message.
-      if (humanGuess > max || humanGuess < min) {
+      if (humanGuess > maximum || humanGuess < minimum) {
         humanGuess = await ask(
           "Your guess is outside of the range, please pick a guess between " +
-            min +
+            minimum +
             " and " +
-            max +
+            maximum +
             ". "
         );
       } else if (humanGuess < compNumber) {
@@ -75,16 +75,6 @@ async function start() {
       }
     }
   }
-
+  //Exit the program.
   process.exit();
 }
-
-/* ------------------ My initial outline below --------------- */
-
-//If the number I guess is too high, the computer tells me I guessed too high.
-
-//If the number I guess is too low, the computer tells me I guessed too low.
-
-//The computer tells me to guess again.
-
-//If I guess the correct number, computer tells me congratulations and ends the game.
