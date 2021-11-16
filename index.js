@@ -68,7 +68,6 @@ function smartGuess(min, max) {
 }
 
 //Call the humanChooses function.
-humanChooses();
 
 async function humanChooses() {
   min = 1;
@@ -164,7 +163,7 @@ async function startAgain() {
   }
 }
 //Call the startAgain function.
-startAgain(humanChooses());
+
 
 /* ------------------- THE COMPUTER CHOOSES NUMBER GAME ---------------- */
 
@@ -177,7 +176,6 @@ let range = maximum - minimum + 1;
 /* ------------------ Function block ---------------- */
 
 //Call the async function.
-compChooses();
 
 //Function to start the game
 async function compChooses() {
