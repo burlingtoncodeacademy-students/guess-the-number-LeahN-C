@@ -62,7 +62,7 @@ async function start() {
   let compGuess = smartGuess(min, max);
   //Computer makes a smart guess.
   let answer = await ask("Is your number " + compGuess + "? ");
-  //let guessCount = ;
+  let guessCount = 0;
 
   //If computer guesses correctly on the first try, it rejoices!
   //Otherwise, it enters 'while' loop below.
@@ -71,13 +71,13 @@ async function start() {
     startAgain();
   } else {
     while (answer !== "y" || answer !== "yes") {
+      guessCount = guessCount + 1;
       //If computer guesses incorrectly, it asks if the number is higher or lower.
       if (answer === "y" || answer === "yes") {
         //If computer finally guesses correctly, it celbrates!
         //console.log("Yay! I finally guessed it! ");
         console.log(
-          "Yay! I finally guessed it! \nIt took me " +
-             +
+          "Yay! I finally guessed it! \nIt took me " + guessCount +
             " tries to guess your number. "
         );
         startAgain();
@@ -115,7 +115,6 @@ async function start() {
     }
   }
 }
-
 //Callback function to start game over if human says yes.
 async function startAgain() {
   let playAgain = await ask("Do you want to play again? ");
@@ -126,22 +125,3 @@ async function startAgain() {
   }
 }
 startAgain(start());
-
-/* Play again */
-/*
-    async function playAgain(callback) {
-
-    }
-    playAgain(start)
-
-    ???
-      await ask("Do you want to play again? ");
-      while (answer === "y" || answer === "yes") {
-        secretNumber = await ask("What is your new secret number? ");
-        console.log("You entered: " + secretNumber);
-
-
-      } else if (answer === "n" || answer === "no") {
-        process.exit();
-      }
-        */
